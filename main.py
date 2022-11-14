@@ -5,23 +5,31 @@ def parse_cook_book(data):
 
         return result
 
+
 def make_dict(lines):
     result = dict()
+    buff_list = []
 
     for line in lines:
-        buff_list = []
-
         if line != '\n':
             buff_list.append(line)
         else:
-            result[buff_list[0][:-2]] = make_ingredient(buff_list[1:])
+            result[buff_list[0][:-1]] = make_ingredient(buff_list[2:])
 
             buff_list.clear()
 
+    return result
+
 
 def make_ingredient(raw_list):
-    pass
+    result = []
+    for line in raw_list:
+        elements = line[:-1].split(' | ')
+        result.append({'ingredient_name': elements[0], 'quantity': elements[1], 'measure': elements[2]})
+
+    return result
+
 
 data = 'data.txt'
 
-parse_cook_book(data)
+print(parse_cook_book(data))
