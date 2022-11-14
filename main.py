@@ -15,7 +15,17 @@ class CookBook:
         self.cook_book = self._parse_cook_book(data_file)
 
     def get_shop_list_by_dishes(self, dishes, person_count):
-        pass
+        result = {}
+
+        for dish in dishes:
+            for ingred in self.cook_book[dish]:
+                if ingred['ingredient_name'] not in result:
+                    result[ingred['ingredient_name']] = {'measure': ingred['measure'],
+                                                         'quantity': int(ingred['quantity']) * person_count}
+                else:
+                    result[ingred['ingredient_name']]['quantity'] += int(ingred['quantity']) * person_count
+
+        return result
 
     def _parse_cook_book(self, data_file):
         with open(data_file, 'r', encoding='utf-8') as file:
@@ -41,4 +51,6 @@ class CookBook:
 data = 'data.txt'
 cook = CookBook(data)
 
-print(cook.cook_book)
+#print(cook.cook_book)
+
+print(cook.get_shop_list_by_dishes(['Запеченный картофель', 'Омлет'], 2))
