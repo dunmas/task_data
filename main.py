@@ -47,10 +47,38 @@ class CookBook:
 
         return result
 
+# task 3
+
+
+def file_processing(files: list):
+    pre_dict = {}
+    result_file = 'result.txt'
+
+    # создаём соответствие "файл - количество строк"
+    for file in files:
+        pre_dict[file] = sum(1 for line in open(file, 'r', encoding='utf-8'))
+
+    buffer = ""
+
+    for file in sorted(pre_dict, key=pre_dict.get):
+        buffer += f"{file}\n" \
+                  f"{pre_dict[file]}\n" \
+
+        with open(file, 'r', encoding='utf-8') as data:
+            for line in data.readlines():
+                buffer += line
+            buffer += '\n'
+
+    with open(result_file, 'w', encoding='utf-8') as result:
+        result.write(buffer)
+
 
 data = 'data.txt'
 cook = CookBook(data)
+files = ['1.txt', '2.txt']
 
-#print(cook.cook_book)
+file_processing(files)
+
+print(cook.cook_book)
 
 print(cook.get_shop_list_by_dishes(['Запеченный картофель', 'Омлет'], 2))
